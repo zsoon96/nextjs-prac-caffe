@@ -1,0 +1,12 @@
+h1 {
+    color: black;
+}
+
+a {
+    color: black;
+}
+
+/* 적용 x */
+a.btn-link {
+    --bs-btn-color: none;
+}

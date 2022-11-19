@@ -1,11 +1,11 @@
 import Header from "../components/Header";
 
-export default function Home() {
+export default function Introduce() {
     return (
         <div className='container'>
 
             <Header/>
-            <h1>Caffe</h1>
+            <h1>Introduce</h1>
 
         </div>
     )
