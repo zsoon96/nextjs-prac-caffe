@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Header() {
     return (
-        <div className="flex flex-row p-2 justify-between">
+        <div className="flex flex-row py-2 -mx-3 justify-between">
             <div>
                 <Link href="/">
                     <div className="btn btn-link" style={{color: 'black'}}>Caffe</div>
