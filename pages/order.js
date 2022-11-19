@@ -1,11 +1,24 @@
 import Header from "../components/Header";
-import {useState} from "react";
+import {useState, useMemo} from "react";
+
+// 화폐단위로 형식 변환
+const formatter = Intl.NumberFormat('ko-KR')
 
 export default function Order() {
     // [ 읽기전용, 쓰기전용 ] = useState(기본값)
     const [hasEspresso, setEspresso] = useState(false)
     const [hasAmericano, setAmericano] = useState(false)
     const [hasLatte, setLatte] = useState(false)
+
+    // 필요할 때만 해당 연산을 기억하여 실행하는 hook
+    // 해당 hook을 사용하지 않을 경우, 렌더링 될 때마다 아래의 연산이 불필요하게 실행됨
+    const sum = useMemo( () => {
+        let value = 0
+        value += hasEspresso ? 2800 : 0
+        value += hasAmericano ? 3200 : 0
+        value += hasLatte ? 3800 : 0
+        return value
+    },[hasEspresso, hasAmericano, hasLatte])
 
     const handleEspresso = () => {
         setEspresso(!hasEspresso)
@@ -17,6 +30,10 @@ export default function Order() {
 
     const handleLatte = () => {
         setLatte(!hasLatte)
+    }
+
+    const hanleOrder = () => {
+        confirm(`주문 합계는 ${formatter.format(sum)}입니다. 주문하시겠습니까?`)
     }
 
     return (
@@ -53,8 +70,8 @@ export default function Order() {
                 { hasAmericano && <li>아메리카노</li>}
                 { hasLatte && <li>카페라떼</li>}
             </ul>
-            <p>합계: {'0'}원</p>
-            <button className='btn btn-primary btn-lg'>주문하기</button>
+            <p>합계: { formatter.format(sum) }원</p>
+            <button className='btn btn-primary btn-lg' onClick={hanleOrder}>주문하기</button>
 
 
         </div>
