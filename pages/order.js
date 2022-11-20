@@ -1,5 +1,6 @@
 import Header from "../components/Header";
 import {useState, useMemo} from "react";
+import Head from "next/head";
 
 // 화폐단위로 형식 변환
 const formatter = Intl.NumberFormat('ko-KR')
@@ -8,7 +9,8 @@ const formatter = Intl.NumberFormat('ko-KR')
 const menuData = [
     {name: '에스프레소', price: 2800},
     {name: '아메리카노', price: 3200},
-    {name: '카페라떼', price: 3800}
+    {name: '카페라떼', price: 3800},
+    {name: '카페모카', price: 4200}
 ]
 
 export default function Order() {
@@ -32,6 +34,10 @@ export default function Order() {
 
     return (
         <div className='container'>
+
+            <Head>
+                <title>Caffe 주문</title>
+            </Head>
 
             <Header/>
             <h1 className="font-bold">Order</h1>

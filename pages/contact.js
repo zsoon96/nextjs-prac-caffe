@@ -1,5 +1,6 @@
 import Header from "../components/Header";
 import {useState} from "react";
+import Head from "next/head";
 
 export default function Contact() {
     const [ email, setEmail ] = useState('')
@@ -14,6 +15,10 @@ export default function Contact() {
 
     return (
         <div className='container'>
+
+            <Head>
+                <title>Caffe 문의</title>
+            </Head>
 
             <Header/>
             <h1 className='font-bold'>Contact us</h1>

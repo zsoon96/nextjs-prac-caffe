@@ -1,8 +1,13 @@
 import Header from "../components/Header";
+import Head from "next/head";
 
 export default function Introduce() {
     return (
         <div className='container'>
+
+            <Head>
+                <title>Caffe 소개</title>
+            </Head>
 
             <Header/>
             <h1 className="font-bold">Introduce</h1>

@@ -1,8 +1,13 @@
 import Header from "../components/Header";
+import Head from "next/head";
 
 export default function Hiring() {
     return (
         <div className='container'>
+
+            <Head>
+                <title>Caffe 채용</title>
+            </Head>
 
             <Header/>
             <h1 className='font-bold'>Hiring!</h1>
