@@ -1,22 +1,31 @@
 import Header from "../components/Header";
-import {useState, useMemo} from "react";
+import {useState, useMemo, useEffect} from "react";
 import Head from "next/head";
 
 // 화폐단위로 형식 변환
 const formatter = Intl.NumberFormat('ko-KR')
 
 // 메뉴 데이터
-const menuData = [
-    {name: '에스프레소', price: 2800},
-    {name: '아메리카노', price: 3200},
-    {name: '카페라떼', price: 3800},
-    {name: '카페모카', price: 4200},
-    {name: '바닐라라떼', price: 4200}
-]
+// const menuData = [
+//     {name: '에스프레소', price: 2800},
+//     {name: '아메리카노', price: 3200},
+//     {name: '카페라떼', price: 3800},
+//     {name: '카페모카', price: 4200},
+//     {name: '바닐라라떼', price: 4200}
+// ]
 
 export default function Order() {
     // [ 읽기전용, 쓰기전용 ] = useState(기본값)
     const [selected, setSelected] = useState([])
+    const [menu, setMenu] = useState([])
+
+    // 메뉴 데이터 페칭
+    useEffect(() => {
+        fetch('/api/menu')
+            .then( res => res.json() )
+            .then( json => setMenu(json) )
+            .catch( console.warn )
+    },[])
 
     // 필요할 때만 해당 연산을 기억하여 실행하는 hook
     // 해당 hook을 사용하지 않을 경우, 렌더링 될 때마다 아래의 연산이 불필요하게 실행됨
@@ -44,7 +53,7 @@ export default function Order() {
             <h1 className="font-bold">Order</h1>
             <h2 className="text-xl font-bold">메뉴판</h2>
             <dl>
-                {menuData.map(item => (
+                {menu.map(item => (
                     <>
                         <dt key={item.name}>{item.name}</dt>
                         <dd>
