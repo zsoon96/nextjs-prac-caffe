@@ -1,6 +1,7 @@
 import Header from "../components/Header";
 import {useState, useMemo, useEffect} from "react";
 import Head from "next/head";
+import axios from "axios";
 
 // 화폐단위로 형식 변환
 const formatter = Intl.NumberFormat('ko-KR')
@@ -21,10 +22,9 @@ export default function Order() {
 
     // 메뉴 데이터 페칭
     useEffect(() => {
-        fetch('/api/menu')
-            .then( res => res.json() )
-            .then( json => setMenu(json) )
-            .catch( console.warn )
+       axios.get('/api/menu')
+           .then((response) => setMenu(response.data))
+           .catch((error) => console.error(error))
     },[])
 
     // 필요할 때만 해당 연산을 기억하여 실행하는 hook
