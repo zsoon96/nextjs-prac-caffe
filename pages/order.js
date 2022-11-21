@@ -15,17 +15,17 @@ const formatter = Intl.NumberFormat('ko-KR')
 //     {name: '바닐라라떼', price: 4200}
 // ]
 
-export default function Order() {
+export default function Order(props) {
     // [ 읽기전용, 쓰기전용 ] = useState(기본값)
     const [selected, setSelected] = useState([])
-    const [menu, setMenu] = useState([])
+    // const [menu, setMenu] = useState([])
 
-    // 메뉴 데이터 페칭
-    useEffect(() => {
-       axios.get('/api/menu')
-           .then((response) => setMenu(response.data))
-           .catch((error) => console.error(error))
-    },[])
+    // 메뉴 데이터 페칭 (csr)
+    // useEffect(() => {
+    //    axios.get('/api/menu')
+    //        .then((response) => setMenu(response.data))
+    //        .catch((error) => console.error(error))
+    // },[])
 
     // 필요할 때만 해당 연산을 기억하여 실행하는 hook
     // 해당 hook을 사용하지 않을 경우, 렌더링 될 때마다 아래의 연산이 불필요하게 실행됨
@@ -53,7 +53,7 @@ export default function Order() {
             <h1 className="font-bold">Order</h1>
             <h2 className="text-xl font-bold">메뉴판</h2>
             <dl>
-                {menu.map(item => (
+                {props.menu.map(item => (
                     <>
                         <dt key={item.name}>{item.name}</dt>
                         <dd>
@@ -85,4 +85,13 @@ export default function Order() {
 
         </div>
     )
+}
+
+export async function getServerSideProps(context) {
+    const response = await axios.get('http://localhost:3000/api/menu')
+    return {
+        props : {
+            menu: response.data
+        }
+    }
 }
