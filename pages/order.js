@@ -2,6 +2,7 @@ import Header from "../components/Header";
 import {useState, useMemo, useEffect} from "react";
 import Head from "next/head";
 import axios from "axios";
+import useSWR from 'swr';
 
 // 화폐단위로 형식 변환
 const formatter = Intl.NumberFormat('ko-KR')
@@ -15,10 +16,18 @@ const formatter = Intl.NumberFormat('ko-KR')
 //     {name: '바닐라라떼', price: 4200}
 // ]
 
-export default function Order(props) {
+const fetcher = function (url) {
+    return axios.get(url).then(response => response.data)
+}
+
+export default function Order() {
     // [ 읽기전용, 쓰기전용 ] = useState(기본값)
     const [selected, setSelected] = useState([])
     // const [menu, setMenu] = useState([])
+
+    // 데이터 페칭 캐싱 (한번 로드하면 해당 결과값을 계속 가지고 있음)
+    const { data, error } = useSWR('http://localhost:3000/api/menu', fetcher)
+    console.log('data', data, 'error', error)
 
     // 메뉴 데이터 페칭 (csr)
     // useEffect(() => {
@@ -42,6 +51,15 @@ export default function Order(props) {
         confirm(`주문 합계는 ${formatter.format(sum)}입니다. 주문하시겠습니까?`)
     }
 
+    if ( error ) {
+        return <>에러가 발생했습니다.</>
+    }
+
+    // data & error 모두 undefined 일 경우
+    if ( !data ) {
+        return <>로딩중입니다.</>
+    }
+
     return (
         <div className='container'>
 
@@ -53,7 +71,7 @@ export default function Order(props) {
             <h1 className="font-bold">Order</h1>
             <h2 className="text-xl font-bold">메뉴판</h2>
             <dl>
-                {props.menu.map(item => (
+                {data.map(item => (
                     <>
                         <dt key={item.name}>{item.name}</dt>
                         <dd>
@@ -87,11 +105,11 @@ export default function Order(props) {
     )
 }
 
-export async function getServerSideProps(context) {
-    const response = await axios.get('http://localhost:3000/api/menu')
-    return {
-        props : {
-            menu: response.data
-        }
-    }
-}
+// export async function getServerSideProps(context) {
+//     const response = await axios.get('http://localhost:3000/api/menu')
+//     return {
+//         props : {
+//             menu: response.data
+//         }
+//     }
+// }
