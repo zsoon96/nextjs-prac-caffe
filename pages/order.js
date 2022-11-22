@@ -26,6 +26,7 @@ export default function Order() {
     // const [menu, setMenu] = useState([])
 
     // 데이터 페칭 캐싱 (한번 로드하면 해당 결과값을 계속 가지고 있음)
+    // 이전에 불러왔던 데이터를 먼저 사용 > 서버 요청 > 결과 수신 > 업데이트 된 데이터로 재랜더링 - 빠른 사용자경험 제공
     const { data, error } = useSWR('http://localhost:3000/api/menu', fetcher)
     console.log('data', data, 'error', error)
 
